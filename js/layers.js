@@ -104,7 +104,7 @@ addLayer("g", {
                 bulk = bulk.min(player.g.buys+1).floor()
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
-                player.g.buys += bulk.sqrt().toNumber();
+                player.g.buys += bulk.pow(0.8).toNumber()/2;
             },
             buyMax() {
                 setBuyableAmount(this.layer, this.id, Decimal.max(getBuyableAmount(this.layer, this.id),this.maxbuys()))
@@ -142,7 +142,7 @@ addLayer("g", {
                 bulk = bulk.min(player.g.buys+1).floor()
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
-                player.g.buys += bulk.sqrt().toNumber();
+                player.g.buys += bulk.pow(0.8).toNumber()/2;
             },
             buyMax() {
                 setBuyableAmount(this.layer, this.id, Decimal.max(getBuyableAmount(this.layer, this.id),this.maxbuys()))
@@ -178,7 +178,7 @@ addLayer("g", {
                 bulk = bulk.min(player.g.buys+1).floor()
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
-                player.g.buys += bulk.sqrt().toNumber();
+                player.g.buys += bulk.pow(0.8).toNumber()/2;
             },
             buyMax() {
                 setBuyableAmount(this.layer, this.id, Decimal.max(getBuyableAmount(this.layer, this.id),tmp.g.buyables[this.id].maxbuys))
@@ -221,7 +221,7 @@ addLayer("g", {
                 bulk = bulk.min(player.g.buys+1).floor()
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
-                player.g.buys += bulk.sqrt().toNumber();
+                player.g.buys += bulk.pow(0.8).toNumber()/2;
             },
             buyMax() {
                 if(this.unlocked())
@@ -250,7 +250,7 @@ addLayer("g", {
                 bulk = bulk.min(player.g.buys+1).floor()
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
-                player.g.buys += bulk.sqrt().toNumber();
+                player.g.buys += bulk.pow(0.8).toNumber()/2;
             },
             buyMax() {
                 if(this.unlocked())
@@ -404,7 +404,7 @@ addLayer("g", {
         return gain
     },
     update(diff) {
-        player.g.buys /= (5 ** diff)
+        player.g.buys /= (4 ** diff)
 
         let gain = this.production()
 
