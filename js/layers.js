@@ -101,6 +101,8 @@ addLayer("g", {
                 let bulk = layers.g.buyables[this.id].maxbuys().sub(getBuyableAmount(this.layer, this.id));
                 bulk = bulk.min(player.g.buys+1).max(1).floor()
 
+                if(bulk.isNan()) bulk = new Decimal(1)
+
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
 
@@ -142,6 +144,8 @@ addLayer("g", {
                 let bulk = layers.g.buyables[this.id].maxbuys().sub(getBuyableAmount(this.layer, this.id));
                 bulk = bulk.min(player.g.buys+1).max(1).floor()
 
+                if(bulk.isNan()) bulk = new Decimal(1)
+
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
 
@@ -178,8 +182,12 @@ addLayer("g", {
             display() { return `<h2>Secondary Multiplier x${formatWhole(getBuyableAmount("g",13))}</h2><br>Multiplies Generator Dust production by ×${format(this.effect())}.<br>Costs ${formatWhole(this.cost())} points` },
             canAfford() { return player.points.gte(this.cost()) },
             buy() {
+                player.points = player.points.sub(this.cost())
+
                 let bulk = layers.g.buyables[this.id].maxbuys().sub(getBuyableAmount(this.layer, this.id));
                 bulk = bulk.min(player.g.buys+1).max(1).floor()
+
+                if(bulk.isNan()) bulk = new Decimal(1)
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
@@ -224,8 +232,12 @@ addLayer("g", {
             display() { return `<h2>Tertiary Time Multiplier x${formatWhole(getBuyableAmount("g",21))}</h2><br>Multiplies Generator Dust production by ×${format(this.effect())}.<br>Costs ${formatWhole(this.cost())} points` },
             canAfford() { return player.points.gte(this.cost()) },
             buy() {
+                player.points = player.points.sub(this.cost())
+
                 let bulk = layers.g.buyables[this.id].maxbuys().sub(getBuyableAmount(this.layer, this.id));
                 bulk = bulk.min(player.g.buys+1).max(1).floor()
+
+                if(bulk.isNan()) bulk = new Decimal(1)
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
@@ -256,8 +268,12 @@ addLayer("g", {
             display() { return `<h2>Quaternary Multiplier x${formatWhole(getBuyableAmount("g",22))}</h2><br>Multiplies Generator Dust production by ×${format(this.effect())}.<br>Costs ${formatWhole(this.cost())} points` },
             canAfford() { return player.points.gte(this.cost()) },
             buy() {
+                player.points = player.points.sub(this.cost())
+
                 let bulk = layers.g.buyables[this.id].maxbuys().sub(getBuyableAmount(this.layer, this.id));
                 bulk = bulk.min(player.g.buys+1).max(1).floor()
+
+                if(bulk.isNan()) bulk = new Decimal(1)
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
