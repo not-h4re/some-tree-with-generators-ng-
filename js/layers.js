@@ -43,8 +43,6 @@ addLayer("g", {
                 ["display-text",
                     function() { return `(+${format(player.g.buys)} buys per second)` }, {"font-size": "12px"}],
                 ["display-text",
-                    function() { return `(+${format(layers.g.production())}/s)` }, {"font-size": "12px"}],
-                ["display-text",
                     function() { if(!layers.g.reduction().eq(1)) return `Generator point production is raised to the ${layers.g.reduction()}th power` }, {"font-size": "12px"}],
                 "blank",
                 ["buyables",[1,2]],
