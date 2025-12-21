@@ -327,7 +327,7 @@ addLayer("g", {
             requirementDescription: "Do 2 Compacts",
             effectDescription: "Unlock Secondary Multipliers",
             done() { return getBuyableAmount("g",31).gte(2)},
-            unlocked() { return hasAchievement("a",13) || getBuyableAmount("g",31).gte(2)},
+            unlocked() { return hasAchievement("a",13) || getBuyableAmount("g",31).gte(1)},
         },
         1: {
             requirementDescription: "Do 3 Compacts",
@@ -557,10 +557,10 @@ addLayer("s", {
             unlocked() {return hasMilestone("s",this.id-2)},
         },
         7: {
-            requirementDescription: "18 Skill",
+            requirementDescription: "17 Skill",
             effectDescription: "+1 automation point",
             
-            done() { return player.s.points.gte(18) },
+            done() { return player.s.points.gte(17) },
             unlocked() {return hasMilestone("s",this.id-2)},
         },
         8: {
@@ -615,13 +615,19 @@ addLayer("s", {
             tooltip() {return "Buys left to right; top to bottom"},
             canClick() {return player.s.points.gt(player.s.used)},
             onClick() {
-                let upgs = [11,21,22,23,32,33,41,42,51,52,61,62,63,71,72,81,82,91]
+                let upgs = [11,12,13,21,22,23,32,33,41,42,43,51,52,53,61,62,63,71,72,73,81,82,83,91,92,93]
+                let j;
 
-                for(var i=0;i<upgs.length;i++)
-                    if(layers.s.upgrades[upgs[i]].canAfford() && !player.s.upgrades.includes(upgs[i])){
+                for(var i=0;i<upgs.length;i++){
+                    j = layers.s.upgrades[upgs[i]];
+                    if(
+                        (typeof j.unlocked == "function" ? j.unlocked() : j.unlocked) &&
+                        layers.s.upgrades[upgs[i]].canAfford() && !player.s.upgrades.includes(upgs[i])
+                    ){
                         layers.s.upgrades[upgs[i]].pay()
                         player.s.upgrades.push(upgs[i])
                     }
+                }
                 
             }
         },
@@ -862,7 +868,7 @@ addLayer("s", {
         33: {
             title: "Time Warp",
             description: "Speed up time since last row 2 reset based on total skill points",
-            tooltip: "(boosts A more basic boost and Teriary Time Generators)",
+            tooltip: "(boosts A more basic boost and Tertiary Time Generators)",
 
             effect(){
                 return player.s.total.div(2)
@@ -887,6 +893,8 @@ addLayer("s", {
             tooltip: "(Time Warp upgrades boost this)",
 
             effect(){
+                if(hasAchievement("a",44)) return new Decimal(player.g.time).pow(0.3).add(1).pow(2.2)
+                if(hasAchievement("a",43)) return new Decimal(player.g.time).pow(0.3).add(1).pow(2)
                 return new Decimal(player.g.time).pow(0.3).add(1)
             },
             effectDisplay(){return "×" + format(this.effect(),2)},
@@ -1110,7 +1118,7 @@ addLayer("sa", {
             pay() { player.sa.used = player.sa.used.add(this.cost)},
         },
         14: {
-            fullDisplay: "<h2>Time Multiplier</h2><br>automate teriary time multipliers purchasing & they no longer take away points",
+            fullDisplay: "<h2>Time Multiplier</h2><br>automate tertiary time multipliers purchasing & they no longer take away points",
 
             branches: [13],
             cost: new Decimal(1),
@@ -1240,9 +1248,9 @@ addLayer("d", {
     requires: new Decimal(18500), 
     exponent(){
         let exponent = 1.1;
-        if(player.d.points.gte(4)) exponent = 1.35
+        if(player.d.points.gte(4)) exponent = 1.3
 
-        if(hasAchievement("a",42)) exponent -= 0.06;
+        if(hasAchievement("a",42)) exponent -= 0.035;
         return exponent
     },
     base: 1.35,
@@ -1259,10 +1267,11 @@ addLayer("d", {
         "Depression": {
             content: [
                 ["blank",24],
+                ["infobox","intro"],
+                ["blank",12],
                 "main-display",
                 "prestige-button",
                 "blank",
-                ["infobox", ["Intro"]]
                 ["display-text",
                     function() { return `Entering Depression causes a skill reset.` }, {"font-size": "12px"}],
                 ["display-text",
@@ -1281,9 +1290,12 @@ addLayer("d", {
     },
 
     infoboxes: {
-        "Intro": {
-            title: "Introduction",
-            body() { return "bar" },
+        intro: {
+            title: "Introduction!",
+            body() { return `
+                welcome to depression!<br><br>
+                a quick note that skill respec ONLY resets skill upgrades; any locked mechanic's boost will still stay but you can't use it anymore.<br><br>
+                also the compact scaling decreases are pretty strong<br><br>goodluck!` },
         },
     },
 
@@ -1294,9 +1306,9 @@ addLayer("d", {
             goalDescription() {return `${format(this.goal())} generator dust`},
             rewardDescription: "Reduce skill requirement (-^0.04)",
             goal(){
-                let req = new Decimal(1e20)
+                let req = new Decimal(1e15)
                 req = req.mul(new Decimal(1e5).pow(new Decimal(2).pow(player.d.challenges[this.id])))
-                if(player.d.challenges[11] >= 1) req = req.div(1e5)
+                if(player.d.challenges[11] >= 2) req = req.div(1e5)
                 if(player.d.challenges[11] === 4) req = req.mul(1e5)
                 return req;
             },
@@ -1309,7 +1321,7 @@ addLayer("d", {
 
             onEnter(){
                 tmp.s.clickables[11].onClick()
-                player.s.points = player.s.points.div(player.d.challenges[this.id] + 2).floor()
+                player.s.points = player.s.best.div(player.d.challenges[this.id] + 2).floor()
             },
             onExit(){player.s.points = player.s.best},
             unlocked(){return player.d.points.gte(1)},
@@ -1321,9 +1333,11 @@ addLayer("d", {
             goalDescription() {return `${format(this.goal())} generator dust`},
             rewardDescription: "Unlock new skill upgrades (each completion)",
             goal() {
-                let req = new Decimal(1e20)
+                let req = new Decimal(1e25)
                 req = req.mul(new Decimal(1e5).pow(player.d.challenges[this.id]))
 
+                if(player.d.challenges[this.id] >= 1) req = req.div(1e5)
+                if(player.d.challenges[this.id] === 3) req = req.div(1e5)
                 if(player.d.challenges[this.id] >= 5) req = req.mul(1e5)
 
                 return req;
@@ -1338,7 +1352,7 @@ addLayer("d", {
 
             onEnter(){
                 tmp.s.clickables[11].onClick()
-                player.s.points = player.s.points.div(player.d.challenges[this.id] + 2).floor()
+                player.s.points = player.s.best.div(player.d.challenges[this.id] + 2).floor()
             },
             onExit(){player.s.points = player.s.best},
             unlocked(){return player.d.points.gte(2)},
@@ -1350,9 +1364,9 @@ addLayer("d", {
             goalDescription() {return `${format(this.goal())} generator dust`},
             rewardDescription: "S11: 'A generic Boost' is stronger",
             goal() {
-                let req = new Decimal(1e10)
+                let req = new Decimal(1e15)
                 req = req.mul(new Decimal(1e5).pow(player.d.challenges[this.id]))
-                if(req.gte(1e25)) req = req.mul(1e5)
+                if(player.d.challenges[this.id] === 1) req = req.mul(1e5)
                 if(req.gte(1e35)) req = req.mul(1e10)
                 return req;
             },
@@ -1364,12 +1378,12 @@ addLayer("d", {
                 return new Decimal(0.11).mul(new Decimal(player.d.challenges[this.id]).pow(0.65))
             },
             nerf() {
-                return new Decimal(0.5).div(new Decimal(1.5).pow(player.d.challenges[this.id]))
+                return new Decimal(0.5).div(new Decimal(1.4).pow(player.d.challenges[this.id]))
             },
 
             onEnter(){
                 tmp.s.clickables[11].onClick()
-                player.s.points = player.s.points.div(player.d.challenges[this.id] + 2).floor()
+                player.s.points = player.s.best.div(player.d.challenges[this.id] + 2).floor()
             },
             onExit(){player.s.points = player.s.best},
             unlocked(){return player.d.points.gte(3)},
@@ -1382,7 +1396,8 @@ addLayer("d", {
             rewardDescription: "Reduce the skill point requirement formula",
             goal() {
                 let req = new Decimal(1e40)
-                //req = req.mul(new Decimal(1e5).pow(player.d.challenges[this.id]))
+                req = req.mul(new Decimal(1e5).pow(player.d.challenges[this.id]))
+                if(player.d.challenges[this.id] === 0) req = req.mul(1e5)
                 return req;
             },
             canComplete() {
@@ -1398,7 +1413,7 @@ addLayer("d", {
 
             onEnter(){
                 tmp.s.clickables[11].onClick()
-                player.s.points = player.s.points.div(player.d.challenges[this.id] + 2).floor()
+                player.s.points = player.s.best.div(player.d.challenges[this.id] + 2).floor()
             },
             onExit(){player.s.points = player.s.best},
             unlocked(){return player.d.points.gte(4)},
@@ -1408,7 +1423,7 @@ addLayer("d", {
             name() {return `Baseline 2: ${romanNumeral(player.d.challenges[this.id])}`},
             challengeDescription() {return `Divide skill by ${player.d.challenges[this.id]*2 + 6}<br>Lose all depression`},
             goalDescription() {return `${format(this.goal())} generator dust`},
-            rewardDescription: "nothing",
+            rewardDescription: "you beat the game!!!",
             goal() {
                 let req = new Decimal(["1e100","Infinity"][player.d.challenges[this.id]])
                 //req = req.mul(new Decimal(1e5).pow(player.d.challenges[this.id]))
@@ -1427,7 +1442,7 @@ addLayer("d", {
 
             onEnter(){
                 tmp.s.clickables[11].onClick()
-                player.s.points = player.s.points.div(player.d.challenges[this.id]*2 + 6).floor()
+                player.s.points = player.s.best.div(player.d.challenges[this.id]*2 + 6).floor()
                 player.d.points = new Decimal(0)
             },
             onExit(){

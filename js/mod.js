@@ -52,17 +52,14 @@ function addedPlayerData() { return {
 // Display extra things at the top of the page
 var displayThings = [
 	function() {
-		var depressionChallenges = [11,12,21,22];
-
-		for(var i=0;i<depressionChallenges.length;i++)
-			if(inChallenge("d",depressionChallenges[i]))
-				return format(player.g.points) + " / " + format(tmp.d.challenges[depressionChallenges[i]].goal) + " with D-challenge"
+		if(player.d.activeChallenge)
+			return format(player.g.points) + " / " + format(tmp.d.challenges[player.d.activeChallenge].goal) + " (Depression)"
 	},
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e280000000"))
+	return player.a.achievements.length >= 18
 }
 
 

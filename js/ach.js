@@ -98,9 +98,9 @@ addLayer("a", {
             tooltip: "Beat 'Point Drought V'",
         },
         35: {
-            name: "<span class='id'>ACH 35 [★]<br></span>clear!",
-            done() {return player.a.achievements.length >= 14},
-            tooltip: "Have 14 achievements<br>Unlock new achievements",
+            name: "<span class='id'>ACH 35 [★]<br></span>partial clear!",
+            done() {return player.a.achievements.length >= 11},
+            tooltip: "Have 11 achievements<br>Unlock new achievements",
         },
         41: {
             name: "<span class='id'>ACH 41<br></span>Slight inflation",
@@ -115,10 +115,22 @@ addLayer("a", {
             tooltip: "Obtain 80 skill<br>[★]: Tear scaling is decreased",
         },
         43: {
-            name: "<span class='id'>ACH 43<br></span>endgame",
+            name: "<span class='id'>ACH 43 [★]<br></span>endgame",
             done() {return player.d.challenges[31] >= 1},
             unlocked() {return hasAchievement("a",this.id) || hasAchievement("a",35)},
-            tooltip: "Beat Baseline 2I",
+            tooltip: "Beat Baseline 2I<br>[★]: You win; Time Warp II's effect is squared.",
+        },
+        44: {
+            name: "<span class='id'>ACH 44 [★]<br></span>outlived the universe",
+            done() {return player.g.time >= 2e10},
+            unlocked() {return hasAchievement("a",44)},
+            tooltip: "outlive the universe (2e10 years)<br>[★]: ooo a hidden achievement oooo (time warp II's effect is ^1.1)",
+        },
+        45: {
+            name: "<span class='id'>ACH 45<br></span>past the endgame",
+            done() {return player.s.points.gte(102)},
+            unlocked() {return hasAchievement("a",44)},
+            tooltip: "102 skill.",
         },
     },
     effect(){
