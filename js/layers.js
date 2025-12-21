@@ -99,7 +99,7 @@ addLayer("g", {
                 if(!hasMilestone("s",0)) player.points = player.points.sub(this.cost())
 
                 let bulk = layers.g.buyables[this.id].maxbuys().sub(getBuyableAmount(this.layer, this.id));
-                bulk = bulk.min(player.g.buys+1).floor()
+                bulk = bulk.min(player.g.buys+1).max(1).floor()
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
@@ -137,7 +137,7 @@ addLayer("g", {
                 if(!hasMilestone("s",1)) player.points = player.points.sub(this.cost())
 
                 let bulk = layers.g.buyables[this.id].maxbuys().sub(getBuyableAmount(this.layer, this.id));
-                bulk = bulk.min(player.g.buys+1).floor()
+                bulk = bulk.min(player.g.buys+1).max(1).floor()
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
@@ -173,7 +173,7 @@ addLayer("g", {
             canAfford() { return player.points.gte(this.cost()) },
             buy() {
                 let bulk = layers.g.buyables[this.id].maxbuys().sub(getBuyableAmount(this.layer, this.id));
-                bulk = bulk.min(player.g.buys+1).floor()
+                bulk = bulk.min(player.g.buys+1).max(1).floor()
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
@@ -216,7 +216,7 @@ addLayer("g", {
             canAfford() { return player.points.gte(this.cost()) },
             buy() {
                 let bulk = layers.g.buyables[this.id].maxbuys().sub(getBuyableAmount(this.layer, this.id));
-                bulk = bulk.min(player.g.buys+1).floor()
+                bulk = bulk.min(player.g.buys+1).max(1).floor()
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
@@ -245,7 +245,7 @@ addLayer("g", {
             canAfford() { return player.points.gte(this.cost()) },
             buy() {
                 let bulk = layers.g.buyables[this.id].maxbuys().sub(getBuyableAmount(this.layer, this.id));
-                bulk = bulk.min(player.g.buys+1).floor()
+                bulk = bulk.min(player.g.buys+1).max(1).floor()
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
