@@ -33,14 +33,14 @@ addLayer("a", {
             tooltip: "Collect 500 generator dust",
         },
         12: {
-            name: "<span class='id'>ACH 12<br></span>a smaller start",
+            name: "<span class='id'>ACH 12 [★]<br></span>a smaller start",
             done() {return player.g.buyables[31].gte(1)},
-            tooltip: "Do a compact",
+            tooltip: "Do a compact<br>[★]: Achievements reward formula is better",
         },
         13: {
             name: "<span class='id'>ACH 13 [★]<br></span>an even smaller start",
             done() {return player.g.buyables[31].gte(2)},
-            tooltip: "Do two compacts<br>[★]: Unlocks 2 more compact milestones",
+            tooltip: "Do two compacts<br>[★]: Unlocks 2 more compact milestones. Buying the Primary Generator doesn't remove points",
         },
         14: {
             name: "<span class='id'>ACH 14 [★]<br></span>compaction",
@@ -134,6 +134,7 @@ addLayer("a", {
         },
     },
     effect(){
+        if(hasAchievement('a', 12)) return new Decimal(player.a.achievements.length).pow(1.4).pow_base(1.25).add(1+(player.a.achievements.length/10))
         return new Decimal(player.a.achievements.length).pow(1.5).div(10).add(1).add(new Decimal(player.a.achievements.length).pow(0.5).div(5))
     },
 

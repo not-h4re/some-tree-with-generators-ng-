@@ -71,24 +71,24 @@ addLayer("g", {
     buyables: {
         11: {
             cost(x) {
-                if(player.g.buyables[11].gte(1000)) return new Decimal(1.01).pow(x).mul(15).ceil()
-                return new Decimal(10).mul(x.add(1).pow(1.4)).ceil()
+                if(player.g.buyables[11].gte(1000)) return new Decimal(1.012).pow(x).mul(15).ceil()
+                return new Decimal(10).mul(x.add(1).pow(1.46)).ceil()
             },
             effect(x) {
-                let mult = new Decimal(1).div(4.6);
+                let mult = new Decimal(1).div(5);
                 if(hasUpgrade("s",11)) mult = mult.mul(tmp.s.upgrades[11].effect)
                 if(hasUpgrade("s",12)) mult = mult.mul(tmp.s.upgrades[12].effect)
                 if(hasUpgrade("s",13)) mult = mult.mul(tmp.s.upgrades[13].effect)
                 if(hasUpgrade("s",23)) mult = mult.mul(tmp.s.upgrades[23].effect)
                 
                 if(inChallenge("d",12)) return x.mul(2).pow(1.2).mul(mult).pow(tmp.d.challenges[12].nerf)
-                return x.mul(2).pow(1.2).mul(mult)
+                return x.mul(1.8).pow(1.1).mul(mult)
             },
 
             maxbuys(x) {
-                let buys = player.points.floor().div(10).pow(1/1.4).ceil()
+                let buys = player.points.floor().div(10).pow(1/1.46).ceil()
                 if(buys.gte(1000)){
-                    return player.points.div(15).log(1.01).ceil().max(1000)
+                    return player.points.div(15).log(1.012).ceil().max(1000)
                 }
                 return buys
             },
@@ -96,7 +96,7 @@ addLayer("g", {
             display() { return `<h2>Primary Generator x${formatWhole(getBuyableAmount("g",11))}</h2><br>Generates ${format(this.effect())} generator dust per second.<br>Costs ${formatWhole(this.cost())} points` },
             canAfford() { return player.points.gte(this.cost()) },
             buy() {
-                if(!hasMilestone("s",0)) player.points = player.points.sub(this.cost())
+                if(!hasAchievement("a",13)) player.points = player.points.sub(this.cost())
 
                 let bulk = layers.g.buyables[this.id].maxbuys().sub(getBuyableAmount(this.layer, this.id));
                 bulk = bulk.min(player.g.buys+1).max(1).floor()
@@ -115,26 +115,26 @@ addLayer("g", {
         },
         12: {
             cost(x) {
-                if(player.g.buyables[12].gte(1000)) return new Decimal(1.014).pow(x).mul(22.5).ceil()
-                return new Decimal(50).mul(x.add(1).pow(2)).ceil()
+                if(player.g.buyables[12].gte(1000)) return new Decimal(1.018).pow(x).mul(22.5).ceil()
+                return new Decimal(50).mul(x.add(1).pow(2.15)).ceil()
             },
             maxbuys(x) {
-                let buys = player.points.floor().div(50).pow(1/2).ceil()
+                let buys = player.points.floor().div(50).pow(1/2.15).ceil()
                 if(buys.gte(1000)){
-                    return player.points.div(22.5).log(1.014).ceil().max(1000)
+                    return player.points.div(22.5).log(1.018).ceil().max(1000)
                 }
                 return buys
             },
 
             effect(x) {
-                let mult = new Decimal(1);
+                let mult = new Decimal(0.92);
                 if(hasUpgrade("s",11)) mult = mult.mul(tmp.s.upgrades[11].effect)
                 if(hasUpgrade("s",12)) mult = mult.mul(tmp.s.upgrades[12].effect)
                 if(hasUpgrade("s",13)) mult = mult.mul(tmp.s.upgrades[13].effect)
                 if(hasUpgrade("s",23)) mult = mult.mul(tmp.s.upgrades[23].effect)
                 
                 if(inChallenge("d",12)) return x.div(3).add(1).pow(0.8).sub(1).mul(mult).add(1).pow(tmp.d.challenges[12].nerf)
-                return x.div(3).add(1).pow(0.8).sub(1).mul(mult).add(1)
+                return x.div(3.3).add(1).pow(0.75).sub(1).mul(mult).add(1)
             },
             display() { return `<h2>Primary Multiplier x${formatWhole(getBuyableAmount("g",12))}</h2><br>Multiplies Generator Dust production by ×${format(this.effect())}.<br>Costs ${formatWhole(this.cost())} points` },
             canAfford() { return player.points.gte(this.cost()) },
@@ -158,13 +158,13 @@ addLayer("g", {
         },
         13: {
             cost(x) {
-                if(hasMilestone(this.layer,2)) return new Decimal(1.5).pow(x).mul(10000).ceil()
-                return new Decimal(2.5).pow(x).mul(1000).ceil()
+                if(hasMilestone(this.layer,2)) return new Decimal(1.65).pow(x).mul(1000).ceil()
+                return new Decimal(2.65).pow(x).mul(10000).ceil()
             },
             maxbuys(x) {
-                let buys = player.points.div(10000).log(2.5).ceil()
+                let buys = player.points.div(10000).log(2.65).ceil()
                 if(hasMilestone(this.layer,2)) {
-                    buys = player.points.div(1000).log(1.5).ceil()
+                    buys = player.points.div(1000).log(1.65).ceil()
                 }
                 return buys
             },
@@ -205,21 +205,21 @@ addLayer("g", {
         },
         21: {
             cost(x) {
-                if(hasUpgrade("s",82)) return new Decimal(1.5).pow(x.pow(1.12)).mul(1e5).ceil()
-                if(hasUpgrade("s",72)) return new Decimal(1.5).pow(x.pow(1.16)).mul(1e5).ceil()
-                return new Decimal(2).pow(x.pow(1.2)).mul(1e6).ceil()
+                if(hasUpgrade("s",82)) return new Decimal(1.5).pow(x.pow(1.16)).mul(1e5).ceil()
+                if(hasUpgrade("s",72)) return new Decimal(1.5).pow(x.pow(1.2)).mul(1e5).ceil()
+                return new Decimal(2).pow(x.pow(1.25)).mul(1e6).ceil()
             },
             maxbuys(x) {
-                if(hasUpgrade("s",82)) return player.points.div(1e5).log(1.5).pow(1/1.12).ceil()
-                if(hasUpgrade("s",72)) return player.points.div(1e5).log(1.5).pow(1/1.16).ceil()
-                return player.points.div(1e6).log(2).pow(1/1.2).ceil()
+                if(hasUpgrade("s",82)) return player.points.div(1e5).log(1.5).pow(1/1.16).ceil()
+                if(hasUpgrade("s",72)) return player.points.div(1e5).log(1.5).pow(1/1.2).ceil()
+                return player.points.div(1e6).log(2).pow(1/1.25).ceil()
             },
 
             effect(x) {
                 let power = getBuyableAmount(this.layer,this.id).div(50)
 
-                if(power.gte(1)) power = power.pow(0.2)
-                else power = power.pow(1.5)
+                if(power.gte(1)) power = power.pow(0.175)
+                else power = power.pow(1.68)
 
                 let mult = player.s.points.mul(new Decimal(player.g.time).pow(power)).add(0.5).max(1);
                 
@@ -256,10 +256,10 @@ addLayer("g", {
         },
         22: {
             cost(x) {
-                return new Decimal(2).pow(x.pow(2)).mul(1e32).ceil()
+                return new Decimal(2.25).pow(x.pow(2)).mul(1e32).ceil()
             },
             maxbuys(x) {
-                return player.points.div(1e32).log(2).pow(1/2).ceil()
+                return player.points.div(1e32).log(2.25).pow(1/2).ceil()
             },
 
             effect(x) {
@@ -296,13 +296,13 @@ addLayer("g", {
                 if(hasUpgrade("s",93)) x = x.pow(upgradeEffect("s",93))
 
                 let upgs = hasUpgrade("s",62) + hasUpgrade("s",32) + hasUpgrade("s",22)
-                if(upgs >= 3) return new Decimal(10).pow((x.pow(2).div(7)).add(2.5)).div(2)
-                if(upgs >= 2) return new Decimal(10).pow((x.mul(x.add(1)).div(6)).add(3))
-                if(upgs >= 1) return new Decimal(10).pow((x.mul(x.add(1)).div(4)).add(3)).mul(5)
-                return new Decimal(10).pow((x.mul(x.add(1)).div(2)).add(3)).mul(5)
+                if(upgs >= 3) return new Decimal(12).pow((x.pow(2).div(7)).add(2.5)).div(2)
+                if(upgs >= 2) return new Decimal(12).pow((x.mul(x.add(1)).div(6)).add(3))
+                if(upgs >= 1) return new Decimal(12).pow((x.mul(x.add(1)).div(4)).add(3)).mul(5)
+                return new Decimal(12).pow((x.mul(x.add(1)).div(2)).add(3)).mul(5)
             },
             effect(x) { 
-                let eff = new Decimal(4).pow(x);
+                let eff = new Decimal(4.25).pow(x*1.05);
                 if(inChallenge("d",21)) eff = eff.pow(tmp.d.challenges[21].nerf)
                 return eff;
             },
@@ -322,9 +322,9 @@ addLayer("g", {
                 let boost = new Decimal(1);
                 if(hasUpgrade("s",91)) boost = boost.mul(0.5)
 
-                if(hasUpgrade("s",61)) return new Decimal(1.2).pow(x).add(x.div(1.5)).add(2).mul(boost).ceil()
-                if(hasUpgrade("s",52)) return new Decimal(1.25).pow(x).add(x.div(1.2)).add(2).floor().mul(boost).ceil()
-                return new Decimal(1.4).pow(x).add(x).add(2).floor().mul(boost).ceil()
+                if(hasUpgrade("s",61)) return new Decimal(1.28).pow(x).add(x.div(1.5)).add(2).mul(boost).ceil()
+                if(hasUpgrade("s",52)) return new Decimal(1.375).pow(x).add(x.div(1.2)).add(2).floor().mul(boost).ceil()
+                return new Decimal(1.5).pow(x).add(x).add(2).floor().mul(boost).ceil()
             },
             effect(x) {
                 let effect = new Decimal(10)
@@ -347,10 +347,10 @@ addLayer("g", {
         41: {
             cost(x) {
                 let boost = new Decimal(1)
-                if(hasUpgrade("s",81)) boost = boost.mul(0.5)
-                if(hasUpgrade("s",91)) boost = boost.mul(0.5)
+                if(hasUpgrade("s",81)) boost = boost.mul(0.55)
+                if(hasUpgrade("s",91)) boost = boost.mul(0.55)
 
-                return new Decimal(1.5).pow(x).add(x).add(2).floor().mul(boost).ceil()
+                return new Decimal(1.65).pow(x).add(x).add(2).floor().mul(boost).ceil()
             },
             effect(x) {
                 let effect = new Decimal(10)
@@ -382,7 +382,7 @@ addLayer("g", {
         },
         1: {
             requirementDescription: "Do 3 Compacts",
-            effectDescription: "+0.2 Generator dust efficiency",
+            effectDescription: "+0.15 Generator dust efficiency",
             tooltip: "Efficiency: how many points it produces<br>(dust<sup>0.7</sup> -> dust<sup>0.9</sup>)",
             done() { return getBuyableAmount("g",31).gte(3) },
             unlocked() { return hasAchievement("a",13)},
@@ -390,7 +390,7 @@ addLayer("g", {
         2: {
             requirementDescription: "Do 4 Compacts",
             effectDescription: "Secondary multiplier cost scaling is reduced<br>Unlock a new layer.",
-            tooltip: "10,000(2.5^x) -> 1000(1.5^x)",
+            tooltip: "10,000(2.65^x) -> 1000(1.65^x)",
             done() { return getBuyableAmount("g",31).gte(4) },
             unlocked() { return hasAchievement("a",13)},
         },
@@ -403,8 +403,8 @@ addLayer("g", {
     },
 
     effect() {
-        let exponent = new Decimal(0.7)
-        if(hasMilestone(this.layer,1)) exponent = exponent.add(0.2)
+        let exponent = new Decimal(0.55)
+        if(hasMilestone(this.layer,1)) exponent = exponent.add(0.15)
         if(hasUpgrade("s",21)) exponent = exponent.add(0.2)
         if(hasUpgrade("s",41)) exponent = exponent.mul(2)
 
@@ -427,6 +427,7 @@ addLayer("g", {
         gain = gain.mul(layers.g.buyables[31].effect())
         gain = gain.mul(layers.g.buyables[32].effect())
         gain = gain.mul(layers.g.buyables[41].effect())
+        if(hasUpgrade('sa', 11)) gain = gain.mul(player.s.points.add(1))
         gain = gain.pow(this.reduction())
 
         gain = gain.mul(layers.a.effect())
@@ -497,16 +498,16 @@ addLayer("s", {
     baseResource: "generator dust",
     baseAmount() {return player.g.points},
 
-    requires: new Decimal(1e10), 
+    requires: new Decimal(1e12), 
     exponent(){
-        var exp = new Decimal(1.46)
+        var exp = new Decimal(1.5)
         
         if(player.s.points.gte(100)) exp = exp.add(new Decimal(0.01).mul(player.s.points.sub(99)))
 
         return exp.sub(tmp.d.challenges[11].reward)
     },
     base(){
-        return new Decimal(10).sub(tmp.d.challenges[22].reward).sub(hasAchievement("a",15)*2)
+        return new Decimal(11).sub(tmp.d.challenges[22].reward).sub(hasAchievement("a",15)*2)
     },
     gainMult() {
         if(player.d.activeChallenge) return new Decimal(0)
@@ -1179,7 +1180,7 @@ addLayer("sa", {
 
     upgrades: {
         11: {
-            fullDisplay: "<h2>Primary Generator</h2><br>automate primary generator purchasing & they no longer take away points",
+            fullDisplay: "<h2>Primary Generator</h2><br>automate primary generator purchasing and (total skill+1) multiplies generator dust gain",
 
             cost: new Decimal(1),
 

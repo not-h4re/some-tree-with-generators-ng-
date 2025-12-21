@@ -1,6 +1,6 @@
 let modInfo = {
-	name: "Some tree with generators",
-	author: "brandly",
+	name: "Some tree with generators NG-",
+	author: "original: brandly, ng- by alonesomecomet",
 	pointsName: "points",
 	modFiles: ["ach.js","layers.js", "tree.js"],
 
@@ -12,11 +12,18 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.1g",
-	name: "Rebalances!",
+	num: "2.1g-1.00",
+	name: "creation",
 }
 
-let changelog = `<h1>hi</h1>
+let changelog = `<h1>Changelog</h1><br>
+changelog format: X.Yz-A.BC<br>
+X.Yz = original version number<br>
+A = major update (significantly extends content)<br>
+B = minor updates (rebalancing or changing content)<br>
+C = bug fixes<br><br>
+<h2>2.1g-1</h2><br>
+- Created game<br>
 `
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
