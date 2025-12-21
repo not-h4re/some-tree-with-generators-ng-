@@ -55,7 +55,7 @@ addLayer("a", {
         21: {
             name: "<span class='id'>ACH 21 [★]<br></span>dont cry",
             done() {return player.g.buyables[31].gte(12) || player.d.points.gte(1)},
-            tooltip: "Unlock Depression<br>[★]: Skill upgrades no longer require both connections, and one branch is removed",
+            tooltip: "Unlock Depression<br>[★]: One skill branch is removed",
         },
         22: {
             name: "<span class='id'>ACH 22<br></span>skilled",

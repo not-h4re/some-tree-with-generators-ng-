@@ -471,6 +471,7 @@ addLayer("g", {
         let milestones = player.g.milestones;
 
         layerDataReset(this.layer);
+        if(hasMilestone("s",4)) player.g.buyables[11] = new Decimal(1)
         if(hasMilestone("s",8)) player.g.milestones = milestones;
     },
 })
@@ -523,11 +524,14 @@ addLayer("s", {
                 ["blank",24],
                 ["display-text",
                     function() { return `You have <h2 style="color: rgb(86, 204, 163); text-shadow: rgb(86, 204, 163) 0px 0px 10px;">${formatWhole(player.s.points.sub(player.s.used))} / ${formatWhole(player.s.points)}</h2> skill` }],
+
                 "blank",
                 "prestige-button",
+                ["display-text",
+                    function() { return `Note: for any node with two branches; you only need one or the other to buy that upgrade.` }, {"fontSize": "12px"}],
                 
                 "blank",
-                "clickables",
+                ["clickables",1],
                 "upgrades",
             ]
         },
@@ -549,6 +553,8 @@ addLayer("s", {
             Milestones: {
                 content: [
                     ["blank",24],
+                    ["clickables",[2]],
+                    "blank",
                     ["display-text",
                         function() { return `You have <h2 style="color: rgb(86, 204, 163); text-shadow: rgb(86, 204, 163) 0px 0px 10px;">${formatWhole(player.s.points.sub(player.s.used))} / ${formatWhole(player.s.points)}</h2> skill` }],
                     "blank",
@@ -572,25 +578,28 @@ addLayer("s", {
             effectDescription: "+1 automation point",
 
             done() { return player.s.points.gte(2) },
-            unlocked() {return hasMilestone("s",0)},
+            unlocked() {return hasMilestone("s",0) && !player.g.clickables[21]},
+            style: {"font-size": "0.8em", "height": "0px"}
         },
         2: {
             requirementDescription: "5 Skill",
             effectDescription: "+1 automation point",
 
             done() { return player.s.points.gte(5) },
-            unlocked() {return hasMilestone("s",0)},
+            unlocked() {return hasMilestone("s",0) && !player.g.clickables[21]},
+            style: {"font-size": "0.8em", "height": "0px"}
         },
         3: {
             requirementDescription: "10 Skill",
             effectDescription: "+1 automation point",
 
             done() { return player.s.points.gte(10) },
-            unlocked() {return hasMilestone("s",this.id-2)},
+            unlocked() {return hasMilestone("s",this.id-2) && !player.g.clickables[21]},
+            style: {"font-size": "0.8em", "height": "0px"}
         },
         4: {
             requirementDescription: "12 Skill",
-            effectDescription: "+1 automation point",
+            effectDescription: "+1 automation point. Keep one compact on all row 2 resets",
 
             done() { return player.s.points.gte(12) },
             unlocked() {return hasMilestone("s",this.id-2)},
@@ -600,21 +609,24 @@ addLayer("s", {
             effectDescription: "+1 automation point",
             
             done() { return player.s.points.gte(13) },
-            unlocked() {return hasMilestone("s",this.id-2)},
+            unlocked() {return hasMilestone("s",this.id-2) && !player.g.clickables[21]},
+            style: {"font-size": "0.8em", "height": "0px"}
         },
         6: {
             requirementDescription: "15 Skill",
             effectDescription: "+1 automation point",
             
             done() { return player.s.points.gte(15) },
-            unlocked() {return hasMilestone("s",this.id-2)},
+            unlocked() {return hasMilestone("s",this.id-2) && !player.g.clickables[21]},
+            style: {"font-size": "0.8em", "height": "0px"}
         },
         7: {
             requirementDescription: "17 Skill",
             effectDescription: "+1 automation point",
             
             done() { return player.s.points.gte(17) },
-            unlocked() {return hasMilestone("s",this.id-2)},
+            unlocked() {return hasMilestone("s",this.id-2) && !player.g.clickables[21]},
+            style: {"font-size": "0.8em", "height": "0px"}
         },
         8: {
             requirementDescription: "20 Skill",
@@ -628,28 +640,32 @@ addLayer("s", {
             effectDescription: "+1 automation point",
             
             done() { return player.s.points.gte(26) },
-            unlocked() {return hasMilestone("s",this.id-2)},
+            unlocked() {return hasMilestone("s",this.id-2) && !player.g.clickables[21]},
+            style: {"font-size": "0.8em", "height": "0px"}
         },
         10: {
             requirementDescription: "33 Skill",
             effectDescription: "+1 automation point",
             
             done() { return player.s.points.gte(33) },
-            unlocked() {return hasMilestone("s",this.id-2)},
+            unlocked() {return hasMilestone("s",this.id-2) && !player.g.clickables[21]},
+            style: {"font-size": "0.8em", "height": "0px"}
         },
         11: {
             requirementDescription: "60 Skill",
             effectDescription: "+1 automation point",
             
             done() { return player.s.points.gte(60) },
-            unlocked() {return hasMilestone("s",this.id-1)},
+            unlocked() {return hasMilestone("s",this.id-1) && !player.g.clickables[21]},
+            style: {"font-size": "0.8em", "height": "0px"}
         },
         12: {
             requirementDescription: "70 Skill",
             effectDescription: "+1 automation point",
             
             done() { return player.s.points.gte(70) },
-            unlocked() {return hasMilestone("s",this.id-1)},
+            unlocked() {return hasMilestone("s",this.id-1) && !player.g.clickables[21]},
+            style: {"font-size": "0.8em", "height": "0px"}
         },
     },
 
@@ -683,6 +699,28 @@ addLayer("s", {
                 }
                 
             }
+        },
+        21: {
+            display() {
+                if(player.g.clickables[21]) return "Show non-unique milestones"
+                return "Only show unique milestones"
+            },
+            canClick() {return player.s.points.gt(player.s.used)},
+            onClick() {
+                player.g.clickables[21] = !player.g.clickables[21]
+            },
+            style() {
+                let styles = {
+                    "min-height": "0px",
+                    "padding": "15px 10px",
+                    "font-size": "11px",
+                    "borderRadius": "5px",
+                    "width": "200px",
+                }
+                if(player.g.clickables[21]) styles["backgroundColor"] = "#9AEB57"
+                else styles["backgroundColor"] = "#EB5778"
+                return styles
+            },
         },
     },
 
@@ -745,10 +783,8 @@ addLayer("s", {
 
             canAfford() {
                 if(!player.s.points.sub(player.s.used).gte(this.cost)) return false
-                if(hasAchievement("a",21)) {for(var i=0;i<this.branches.length;i++){ if(hasUpgrade(this.layer,this.branches[i])) return true} return false}
-
-                for(var i=0;i<this.branches.length;i++){ if(!hasUpgrade(this.layer,this.branches[i])) return false }
-                return true;
+                for(var i=0;i<this.branches.length;i++){ if(hasUpgrade(this.layer,this.branches[i])) return true}
+                return false
             }, pay() { player.s.used = player.s.used.add(this.cost)},
         },
 
@@ -821,11 +857,9 @@ addLayer("s", {
 
             canAfford() {
                 if(!player.s.points.sub(player.s.used).gte(this.cost)) return false
-                if(hasAchievement("a",21)) {
-                    for(var i=0;i<this.branches.length;i++){ if(hasUpgrade(this.layer,this.branches[i])) return player.s.points.sub(player.s.used).gte(this.cost)} return false}
-
-                for(var i=0;i<this.branches.length;i++){ if(!hasUpgrade(this.layer,this.branches[i])) return false }
-                return player.s.points.sub(player.s.used).gte(this.cost)
+                for(var i=0;i<this.branches.length;i++)
+                    if(hasUpgrade(this.layer,this.branches[i])) return player.s.points.sub(player.s.used).gte(this.cost)
+                return false
             }, pay() { player.s.used = player.s.used.add(this.cost)},
             unlocked() {return hasAchievement("a",15)}
         },
