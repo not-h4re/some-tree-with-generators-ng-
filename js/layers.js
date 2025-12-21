@@ -306,7 +306,7 @@ addLayer("g", {
                 if(inChallenge("d",21)) eff = eff.pow(tmp.d.challenges[21].nerf)
                 return eff;
             },
-            display() { return `<h2>Compact #${formatWhole(getBuyableAmount("g",31).add(1))}</h2><br>Resets Basic generators, generator dust, and points<br><br>Multiplies Generator Dust production by ×${format(this.effect())}.<br>Requires ${formatWhole(this.cost())} generator dust` },
+            display() { return `<h2>Compact x${formatWhole(getBuyableAmount("g",31))}</h2><br>Resets Basic generators, generator dust, and points<br><br>Multiplies Generator Dust production by ×${format(this.effect())}.<br>Requires ${formatWhole(this.cost())} generator dust` },
             canAfford() { return player[this.layer].points.gte(this.cost()) },
             buy() {
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
@@ -332,7 +332,7 @@ addLayer("g", {
                 if(inChallenge("d",21)) effect = effect.pow(tmp.d.challenges[21].nerf)
                 return new Decimal(effect).pow(x)
             },
-            display() { return `<h2>Compress #${formatWhole(getBuyableAmount("g",32).add(1))}</h2><br>Resets generator dust and points, and halves your compacts<br><br>Multiplies Generator Dust production by ×${format(this.effect())}.<br>Requires ${formatWhole(this.cost())} compacts` },
+            display() { return `<h2>Compress x${formatWhole(getBuyableAmount("g",32))}</h2><br>Resets generator dust and points, and halves your compacts<br><br>Multiplies Generator Dust production by ×${format(this.effect())}.<br>Requires ${formatWhole(this.cost())} compacts` },
             canAfford() { return player.g.buyables[31].gte(this.cost()) },
             buy() {
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
@@ -359,7 +359,7 @@ addLayer("g", {
 
                 return new Decimal(effect).pow(x)
             },
-            display() { return `<h2>Condense #${formatWhole(getBuyableAmount("g",41).add(1))}</h2><br>Resets generator dust and points, and halves your compacts & compresses<br><br>Multiplies Generator Dust production by ×${format(this.effect())}.<br>Requires ${formatWhole(this.cost())} compresses` },
+            display() { return `<h2>Condense x${formatWhole(getBuyableAmount("g",41))}</h2><br>Resets generator dust and points, and halves your compacts & compresses<br><br>Multiplies Generator Dust production by ×${format(this.effect())}.<br>Requires ${formatWhole(this.cost())} compresses` },
             canAfford() { return player.g.buyables[32].gte(this.cost()) },
             buy() {
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
