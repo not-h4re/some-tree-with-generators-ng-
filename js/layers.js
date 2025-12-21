@@ -103,9 +103,12 @@ addLayer("g", {
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
+
+                if(player.points.lt(0)) player.points = new Decimal(0)
             },
             buyMax() {
                 setBuyableAmount(this.layer, this.id, Decimal.max(getBuyableAmount(this.layer, this.id),this.maxbuys()))
+                if(player.points.lt(0)) player.points = new Decimal(0)
             },
         },
         12: {
@@ -141,9 +144,12 @@ addLayer("g", {
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
+
+                if(player.points.lt(0)) player.points = new Decimal(0)
             },
             buyMax() {
                 setBuyableAmount(this.layer, this.id, Decimal.max(getBuyableAmount(this.layer, this.id),this.maxbuys()))
+                if(player.points.lt(0)) player.points = new Decimal(0)
             },
         },
         13: {
@@ -177,9 +183,12 @@ addLayer("g", {
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
+
+                if(player.points.lt(0)) player.points = new Decimal(0)
             },
             buyMax() {
                 setBuyableAmount(this.layer, this.id, Decimal.max(getBuyableAmount(this.layer, this.id),tmp.g.buyables[this.id].maxbuys))
+                if(player.points.lt(0)) player.points = new Decimal(0)
             },
 
             unlocked() {
@@ -220,10 +229,13 @@ addLayer("g", {
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
+
+                if(player.points.lt(0)) player.points = new Decimal(0)
             },
             buyMax() {
                 if(this.unlocked())
                     setBuyableAmount(this.layer, this.id, Decimal.max(getBuyableAmount(this.layer, this.id),tmp.g.buyables[this.id].maxbuys))
+                if(player.points.lt(0)) player.points = new Decimal(0)
             },
 
             unlocked() {
@@ -249,10 +261,13 @@ addLayer("g", {
 
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
                 player.g.buys += bulk.pow(0.8).toNumber()/2;
+
+                if(player.points.lt(0)) player.points = new Decimal(0)
             },
             buyMax() {
                 if(this.unlocked())
                     setBuyableAmount(this.layer, this.id, Decimal.max(getBuyableAmount(this.layer, this.id),tmp.g.buyables[this.id].maxbuys))
+                if(player.points.lt(0)) player.points = new Decimal(0)
             },
 
             unlocked() {
