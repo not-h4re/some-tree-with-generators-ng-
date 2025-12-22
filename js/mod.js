@@ -12,17 +12,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.1g-1.00",
+	num: "1.00 BETA",
 	name: "creation",
 }
 
 let changelog = `<h1>Changelog</h1><br>
-changelog format: X.Yz-A.BC<br>
-X.Yz = original version number<br>
+changelog format: vA.BC<br>
 A = major update (significantly extends content)<br>
-B = minor updates (rebalancing or changing content)<br>
+B = minor updates (rebalancing/changing content, or adds some content)<br>
 C = bug fixes<br><br>
-<h2>2.1g-1</h2><br>
+<h2>1.00</h2><br>
 - Created game<br>
 `
 

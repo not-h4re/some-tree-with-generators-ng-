@@ -296,14 +296,16 @@ addLayer("g", {
                 if(hasUpgrade("s",93)) x = x.pow(upgradeEffect("s",93))
 
                 let upgs = hasUpgrade("s",62) + hasUpgrade("s",32) + hasUpgrade("s",22)
-                if(upgs >= 3) return new Decimal(12).pow((x.pow(2).div(7)).add(2.5)).div(2)
-                if(upgs >= 2) return new Decimal(12).pow((x.mul(x.add(1)).div(6)).add(3))
-                if(upgs >= 1) return new Decimal(12).pow((x.mul(x.add(1)).div(4)).add(3)).mul(5)
+                if(upgs >= 3) return new Decimal(12).pow((x.pow(2).div(5)).add(2.8)).div(1.6)
+                if(upgs >= 2) return new Decimal(12).pow((x.mul(x.add(1)).div(4.25)).add(3))
+                if(upgs >= 1) return new Decimal(12).pow((x.mul(x.add(1)).div(3.5)).add(3)).mul(5)
                 return new Decimal(12).pow((x.mul(x.add(1)).div(2)).add(3)).mul(5)
             },
             effect(x) { 
-                let eff = new Decimal(4.25).pow(x*1.05);
+                let base = new Decimal(3.75)
+                let eff = base.pow(x);
                 if(inChallenge("d",21)) eff = eff.pow(tmp.d.challenges[21].nerf)
+                if(hasAchievement('a', 16)) eff = eff.mul(new Decimal(x).pow(2)).add(1)
                 return eff;
             },
             display() { return `<h2>Compact x${formatWhole(getBuyableAmount("g",31))}</h2><br>Resets Basic generators, generator dust, and points<br><br>Multiplies Generator Dust production by ×${format(this.effect())}.<br>Requires ${formatWhole(this.cost())} generator dust` },
@@ -322,13 +324,13 @@ addLayer("g", {
                 let boost = new Decimal(1);
                 if(hasUpgrade("s",91)) boost = boost.mul(0.5)
 
-                if(hasUpgrade("s",61)) return new Decimal(1.28).pow(x).add(x.div(1.5)).add(2).mul(boost).ceil()
-                if(hasUpgrade("s",52)) return new Decimal(1.375).pow(x).add(x.div(1.2)).add(2).floor().mul(boost).ceil()
-                return new Decimal(1.5).pow(x).add(x).add(2).floor().mul(boost).ceil()
+                if(hasUpgrade("s",61)) return new Decimal(1.365).pow(x).add(x.div(1.25)).add(2).mul(boost).ceil()
+                if(hasUpgrade("s",52)) return new Decimal(1.44).pow(x).add(x.div(1.1)).add(2).floor().mul(boost).ceil()
+                return new Decimal(1.7).pow(x).add(x).add(2).floor().mul(boost).ceil()
             },
             effect(x) {
-                let effect = new Decimal(10)
-                if(hasUpgrade("s",51)) effect = effect.mul(3)
+                let effect = new Decimal(5)
+                if(hasUpgrade("s",51)) effect = effect.mul(2.5)
                 if(inChallenge("d",21)) effect = effect.pow(tmp.d.challenges[21].nerf)
                 return new Decimal(effect).pow(x)
             },
@@ -353,7 +355,7 @@ addLayer("g", {
                 return new Decimal(1.65).pow(x).add(x).add(2).floor().mul(boost).ceil()
             },
             effect(x) {
-                let effect = new Decimal(10)
+                let effect = new Decimal(7)
 
                 if(inChallenge("d",21)) effect = effect.pow(tmp.d.challenges[21].nerf)
 
@@ -383,7 +385,7 @@ addLayer("g", {
         1: {
             requirementDescription: "Do 3 Compacts",
             effectDescription: "+0.15 Generator dust efficiency",
-            tooltip: "Efficiency: how many points it produces<br>(dust<sup>0.7</sup> -> dust<sup>0.9</sup>)",
+            tooltip: "Efficiency: how many points it produces <br>(dust<sup>0.55</sup> -> dust<sup>0.7</sup>)",
             done() { return getBuyableAmount("g",31).gte(3) },
             unlocked() { return hasAchievement("a",13)},
         },
@@ -405,7 +407,7 @@ addLayer("g", {
     effect() {
         let exponent = new Decimal(0.55)
         if(hasMilestone(this.layer,1)) exponent = exponent.add(0.15)
-        if(hasUpgrade("s",21)) exponent = exponent.add(0.2)
+        if(hasUpgrade("s",21)) exponent = exponent.add(0.15)
         if(hasUpgrade("s",41)) exponent = exponent.mul(2)
 
         if(inChallenge("d",22)) exponent = exponent.mul(tmp.d.challenges[22].nerf)
@@ -428,6 +430,7 @@ addLayer("g", {
         gain = gain.mul(layers.g.buyables[32].effect())
         gain = gain.mul(layers.g.buyables[41].effect())
         if(hasUpgrade('sa', 11)) gain = gain.mul(player.s.points.add(1))
+        if(hasAchievement('a', 11)) gain = gain.mul(2)
         gain = gain.pow(this.reduction())
 
         gain = gain.mul(layers.a.effect())
@@ -513,7 +516,8 @@ addLayer("s", {
         if(player.d.activeChallenge) return new Decimal(0)
         
         mult = new Decimal(1)
-        return mult
+        if(hasAchievement('a', 21)) mult = mult.mul(4)
+        return mult.recip()
     },
     gainExp() {
         return new Decimal(1)
@@ -731,9 +735,9 @@ addLayer("s", {
             description: "All generators are stronger based on total real time played.",
 
             effect(){
-                return new Decimal(player.timePlayed).add(60).tetrate(
-                    new Decimal(0.3).add(tmp.d.challenges[21].reward)
-                ).sub(1).div(3).max(1.5)
+                return new Decimal(player.timePlayed).add(1).tetrate(
+                    new Decimal(0.13).add(tmp.d.challenges[21].reward)
+                ).sub(1).max(1.5)
             },
             effectDisplay(){return "×" + format(this.effect(),3)},
 
@@ -744,7 +748,7 @@ addLayer("s", {
         },
         21: {
             title: "A generic power",
-            description: "Buff generator dust effect by ^+0.2",
+            description: "Buff generator dust effect by ^+0.15",
             cost: new Decimal(1),
             branches: ["11"],
 
@@ -803,8 +807,8 @@ addLayer("s", {
         },
         51: {
             title: "Compress Power",
-            description: "Compress strength is tripled",
-            tooltip() {return "10^x => 30^x"},
+            description: "Compress strength is x2.5",
+            tooltip() {return "5^x => 12.5^x"},
             cost: new Decimal(1),
             branches: ["42"],
 

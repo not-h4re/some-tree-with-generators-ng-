@@ -28,14 +28,14 @@ addLayer("a", {
 
     achievements: {
         11: {
-            name: "<span class='id'>ACH 11<br></span>a small start",
+            name: "<span class='id'>ACH 11 [★]<br></span>a small start",
             done() {return player.g.points.gte(500)},
-            tooltip: "Collect 500 generator dust",
+            tooltip: "Collect 500 generator dust<br>[★]: Double generator dust gain",
         },
         12: {
             name: "<span class='id'>ACH 12 [★]<br></span>a smaller start",
             done() {return player.g.buyables[31].gte(1)},
-            tooltip: "Do a compact<br>[★]: Achievements reward formula is better",
+            tooltip: "Do a compact<br>[★]: Achievements boost to generator dust is better",
         },
         13: {
             name: "<span class='id'>ACH 13 [★]<br></span>an even smaller start",
@@ -52,10 +52,15 @@ addLayer("a", {
             done() {return player.g.buyables[31].gte(7)},
             tooltip: "Compact 7 times<br>[★]: Unlocks new skill upgrades and nerf the skill requirement scaling",
         },
+        16: {
+            name: "<span class='id'>ACH 16 [★]<br></span><span style='color:red;'>respec hell</span>",
+            done() {return player.s.points.gte(7)},
+            tooltip: "Have 7 total skill<br>[★]: Compacts are better"
+        },
         21: {
             name: "<span class='id'>ACH 21 [★]<br></span>dont cry",
             done() {return player.g.buyables[31].gte(12) || player.d.points.gte(1)},
-            tooltip: "Unlock Depression<br>[★]: One skill branch is removed",
+            tooltip: "Unlock Depression<br>[★]: One skill branch is removed and skill cost is /4",
         },
         22: {
             name: "<span class='id'>ACH 22<br></span>skilled",
@@ -134,7 +139,7 @@ addLayer("a", {
         },
     },
     effect(){
-        if(hasAchievement('a', 12)) return new Decimal(player.a.achievements.length).pow(1.4).pow_base(1.25).add(1+(player.a.achievements.length/10))
+        if(hasAchievement('a', 12)) return new Decimal(player.a.achievements.length).pow_base(1.5)
         return new Decimal(player.a.achievements.length).pow(1.5).div(10).add(1).add(new Decimal(player.a.achievements.length).pow(0.5).div(5))
     },
 
