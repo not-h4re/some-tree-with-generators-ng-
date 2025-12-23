@@ -409,6 +409,7 @@ addLayer("g", {
         if(hasMilestone(this.layer,1)) exponent = exponent.add(0.15)
         if(hasUpgrade("s",21)) exponent = exponent.add(0.15)
         if(hasUpgrade("s",41)) exponent = exponent.mul(2)
+        exponent = exponent.add(buyableEffect('a', 12))
 
         if(inChallenge("d",22)) exponent = exponent.mul(tmp.d.challenges[22].nerf)
 
@@ -434,6 +435,7 @@ addLayer("g", {
         gain = gain.pow(this.reduction())
 
         gain = gain.mul(layers.a.effect())
+        gain = gain.pow(buyableEffect('a', 11))
         return gain
     },
     update(diff) {
@@ -515,12 +517,14 @@ addLayer("s", {
     gainMult() {
         if(player.d.activeChallenge) return new Decimal(0)
         
-        mult = new Decimal(1)
+        let mult = new Decimal(1)
         if(hasAchievement('a', 21)) mult = mult.mul(4)
         return mult.recip()
     },
     gainExp() {
-        return new Decimal(1)
+        let exp = new Decimal(1)
+        exp = buyableEffect('a', 13)
+        return exp.recip()
     },
     
     tabFormat: {
@@ -1337,7 +1341,7 @@ addLayer("d", {
     baseResource: "primary generators",
     baseAmount() {return player.g.buyables[11]},
 
-    requires: new Decimal(18500), 
+    requires: new Decimal(10950), 
     exponent(){
         let exponent = 1.1;
         if(player.d.points.gte(4)) exponent = 1.3
@@ -1348,7 +1352,8 @@ addLayer("d", {
     base: 1.35,
     gainMult() {
         if(inChallenge("d",31)) return new Decimal(0)
-        mult = new Decimal(1)
+        let mult = new Decimal(1)
+        mult = mult.mul(buyableEffect('a', 14))
         return mult
     },
     gainExp() {
@@ -1396,19 +1401,15 @@ addLayer("d", {
             name() {return `Baseline (${romanNumeral(player.d.challenges[this.id])})`},
             challengeDescription() {return `Divide skill by ${player.d.challenges[this.id] + 2}`},
             goalDescription() {return `${format(this.goal())} generator dust`},
-            rewardDescription: "Reduce skill requirement (-^0.04)",
+            rewardDescription: "Reduce skill requirement (-^0.05)",
             goal(){
-                let req = new Decimal(1e15)
-                req = req.mul(new Decimal(1e5).pow(new Decimal(2).pow(player.d.challenges[this.id])))
-                if(player.d.challenges[11] >= 2) req = req.div(1e5)
-                if(player.d.challenges[11] === 4) req = req.mul(1e5)
-                return req;
+                return new Decimal([4e23, 2e23, 1e100, 1e100, 1e100, 1e100][player.d.challenges[this.id]])
             },
             canComplete: function() {
                 return player.g.points.gte(this.goal())
             },
             reward() {
-                return new Decimal(0.04).mul(player.d.challenges[this.id])
+                return new Decimal(0.05).mul(player.d.challenges[this.id])
             },
 
             onEnter(){
@@ -1425,10 +1426,10 @@ addLayer("d", {
             goalDescription() {return `${format(this.goal())} generator dust`},
             rewardDescription: "Unlock new skill upgrades (each completion)",
             goal() {
-                let req = new Decimal(1e25)
+                let req = new Decimal(2.5e28)
                 req = req.mul(new Decimal(1e5).pow(player.d.challenges[this.id]))
 
-                if(player.d.challenges[this.id] >= 1) req = req.div(1e5)
+                if(player.d.challenges[this.id] >= 1) req = req.div(4.5e8)
                 if(player.d.challenges[this.id] === 3) req = req.div(1e5)
                 if(player.d.challenges[this.id] >= 5) req = req.mul(1e5)
 
